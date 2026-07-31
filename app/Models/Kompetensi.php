@@ -5,18 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Perusahaan extends Model
+class Kompetensi extends Model
 {
     use HasFactory;
-
     public function siswa()
 {
- return $this->hasMany(Siswa::class);
+    return $this->belongsToMany(
+        Siswa::class,
+        'siswa_kompetensi'
+    )->withPivot('nilai');
 }
-// app/Models/Siswa.php
-public function perusahaan()
-{
- return $this->belongsTo(Perusahaan::class);
-}
-
 }
