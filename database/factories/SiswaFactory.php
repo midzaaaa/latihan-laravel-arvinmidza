@@ -26,7 +26,7 @@ class SiswaFactory extends Factory
             'tanggal_mulai_pkl' => $tanggalMulai,
             'tanggal_selesai_pkl' => $tanggalSelesai,
             'perusahaan_id' => Perusahaan::inRandomOrder()->first()->id
-                ?? Perusahaan::factory(),
+                ?? Perusahaan::factory()
         ];
     }
 }

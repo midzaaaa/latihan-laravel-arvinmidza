@@ -10,18 +10,17 @@ class SiswaController extends Controller
 /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-    $siswa = $keyword = $request->input('cari');
+   $keyword = $request->input('cari');
  $siswa = Siswa::with('perusahaan')
- ->when($keyword, function ($query) use ($keyword) {
- $query->where('nama', 'like', "%{$keyword}%")
- ->orWhere('nis', 'like', "%{$keyword}%");
- })
- ->latest()
- ->paginate(10)
- ->withQueryString();
- return view('siswa.index', compact('siswa'));
+    ->when($keyword, function ($query) use ($keyword) {
+        $query->where('nama', 'like', "%{$keyword}%")
+              ->orWhere('nis', 'like', "%{$keyword}%");
+    })
+    ->latest()
+    ->paginate(10)
+    ->withQueryString();
  return view('siswa.index', compact('siswa'));
  }
     /**

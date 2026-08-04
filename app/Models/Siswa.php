@@ -18,11 +18,16 @@ class Siswa extends Model
         'perusahaan_id',
     ];
 
-   public function kompetensi()
-{
-    return $this->belongsToMany(
-        Kompetensi::class,
-        'siswa_kompetensi'
-    )->withPivot('nilai');
-}
+    public function kompetensi()
+    {
+        return $this->belongsToMany(
+            Kompetensi::class,
+            'siswa_kompetensi'
+        )->withPivot('nilai');
+    }
+
+    public function perusahaan()
+    {
+        return $this->belongsTo(Perusahaan::class);
+    }
 }

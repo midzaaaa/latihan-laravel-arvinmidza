@@ -1,7 +1,16 @@
-@extends('layouts.app')
-@section('content')
+
  <a href="{{ route('siswa.create') }}" class="btn btn-primary">+ Tambah Siswa
 PKL</a>
+<form action="{{ route('siswa.index') }}" method="GET" class="my-3">
+    <input type="text"
+           name="cari"
+           value="{{ request('cari') }}"
+           placeholder="Cari nama atau NIS">
+
+    <button type="submit" class="btn btn-primary">
+        Cari
+    </button>
+</form>
  <table class="table">
  <thead>
  <tr><th>NIS</th><th>Nama</th><th>Perusahaan</th><th>Periode
@@ -27,4 +36,3 @@ style="display:inline">
  </tbody>
  </table>
  {{ $siswa->links() }}
-@endsection
