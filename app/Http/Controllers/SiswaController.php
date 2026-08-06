@@ -35,8 +35,21 @@ class SiswaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-     $validated = $request->validate([
+{
+    $validated = $request->validate([
+        'nis' => 'required|unique:siswas,nis',
+        'nama' => 'required|string|max:100',
+        'kelas' => 'required|string|max:30',
+        'tanggal_mulai_pkl' => 'required|date',
+        'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl',
+        'perusahaan_id' => 'required|exists:perusahaans,id',
+    ]);
+
+    Siswa::create($validated);
+
+    return redirect()->route('siswa.index')
+        ->with('success', 'Data siswa PKL berhasil ditambahkan.');
+ ([
  'nis' => 'required|unique:siswas,nis',
  'nama' => 'required|string|max:100',
  'kelas' => 'required|string|max:30',
@@ -59,37 +72,40 @@ class SiswaController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {
-        $perusahaan = Perusahaan::all();
- return view('siswa.edit', compact('siswa', 'perusahaan'));
+{
+    $siswa = Siswa::findOrFail($id);
+    $perusahaan = Perusahaan::all();
 
-    }
+    return view('siswa.edit', compact('siswa', 'perusahaan'));
+}
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
- 'nis' => 'required|unique:siswas,nis,' . $siswa->id,
- 'nama' => 'required|string|max:100',
- 'kelas' => 'required|string|max:30',
- 'tanggal_mulai_pkl' => 'required|date',
- 'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl',
- 'perusahaan_id' => 'required|exists:perusahaans,id',
- ]);
- $siswa->update($validated);
- return redirect()->route('siswa.index')
- ->with('success', 'Data siswa PKL berhasil diperbarui.');
+{
+    $siswa = Siswa::findOrFail($id);
 
-    }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $siswa->delete();
- return redirect()->route('siswa.index')
- ->with('success', 'Data siswa PKL berhasil dihapus.');
+    $validated = $request->validate([
+        'nis' => 'required|unique:siswas,nis,' . $siswa->id,
+        'nama' => 'required|string|max:100',
+        'kelas' => 'required|string|max:30',
+        'tanggal_mulai_pkl' => 'required|date',
+        'tanggal_selesai_pkl' => 'required|date|after:tanggal_mulai_pkl',
+        'perusahaan_id' => 'required|exists:perusahaans,id',
+    ]);
 
-    }
+    $siswa->update($validated);
+
+    return redirect()->route('siswa.index')
+        ->with('success', 'Data siswa PKL berhasil diperbarui.');
 }
+
+ public function destroy(string $id)
+{
+    $siswa = Siswa::findOrFail($id);
+
+    $siswa->delete();
+
+    return redirect()->route('siswa.index')
+        ->with('success', 'Data siswa PKL berhasil dihapus.');
+}}
