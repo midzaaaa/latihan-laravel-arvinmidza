@@ -1,93 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>🏢Data Perusahaan</title>
+    <meta charset="UTF-8">
+    <title>Data Perusahaan</title>
+
     <style>
         body{
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
+            background:#f5f5f5;
             margin:40px;
+        }
+
+        h2{
+            text-align:center;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:10px 18px;
+            background:#0d6efd;
+            color:white;
+            text-decoration:none;
+            border-radius:5px;
+            margin-bottom:20px;
+        }
+
+        .btn:hover{
+            background:#0b5ed7;
         }
 
         table{
             width:100%;
             border-collapse:collapse;
+            background:white;
         }
 
-        table, th, td{
+        table th{
+            background:#0d6efd;
+            color:white;
+            padding:12px;
+        }
+
+        table td{
+            padding:10px;
             border:1px solid #ddd;
         }
 
-        th, td{
-            padding:10px;
-            text-align:left;
+        tr:nth-child(even){
+            background:#f8f8f8;
         }
 
-        th{
-            background:#0d6efd;
-            color:white;
+        tr:hover{
+            background:#eef5ff;
         }
 
-        .btn{
-            padding:8px 15px;
+        .aksi a{
             text-decoration:none;
+            padding:6px 12px;
+            border-radius:4px;
             color:white;
-            border-radius:5px;
         }
 
-        .tambah{
-            background:green;
+        .edit{
+            background:orange;
         }
 
-
-        h2{
-            color:black;
-            background-color:blue;
-            border:1px solid black;
-            border-radius:5px;
+        .hapus{
+            background:red;
+            border:none;
+            color:white;
+            padding:6px 12px;
+            border-radius:4px;
+            cursor:pointer;
         }
     </style>
+
 </head>
 <body>
 
-<h2>🏢Data Perusahaan</h2>
+<h2>🏢 Data Perusahaan</h2>
 
-@if(session('success'))
-<p style="color:green">
-    {{ session('success') }}
-</p>
-@endif
+<a href="{{ route('perusahaan.create') }}" class="btn">
+    + Tambah Perusahaan
+</a>
 
 <table>
+
     <tr>
         <th>No</th>
         <th>Nama Perusahaan</th>
+        <th>Bidang Usaha</th>
         <th>Alamat</th>
+        <th>Telepon</th>
+        <th>Aksi</th>
     </tr>
 
-@foreach($perusahaan as $item)
+    @foreach($perusahaan as $item)
 
-<tr>
-    <td>{{ $loop->iteration }}</td>
-    <td>{{ $item->nama_perusahaan }}</td>
-    <td>{{ $item->alamat }}</td>
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $item->nama_perusahaan }}</td>
+        <td>{{ $item->bidang_usaha }}</td>
+        <td>{{ $item->alamat }}</td>
+        <td>{{ $item->telepon }}</td>
 
-    <td>
+        <td class="aksi">
 
-        <a href="{{ route('perusahaan.edit',$item->id) }}"
-        class="btn edit">
-            Edit
-        </a>
+            <a href="{{ route('perusahaan.edit',$item->id) }}" class="edit">
+                Edit
+            </a>
 
-        <form action="{{ route('perusahaan.destroy',$item->id) }}"
-            method="POST"
-            style="display:inline;">
+            <form action="{{ route('perusahaan.destroy',$item->id) }}"
+                  method="POST"
+                  style="display:inline">
 
-        </form>
+                @csrf
+                @method('DELETE')
 
-    </td>
-</tr>
+                <button type="submit"
+                    class="hapus"
+                    onclick="return confirm('Yakin ingin menghapus data?')">
+                    Hapus
+                </button>
 
-@endforeach
+            </form>
+
+        </td>
+
+    </tr>
+
+    @endforeach
 
 </table>
 
